@@ -84,15 +84,17 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 async function addReadLater(url) {
     // Parse url
     const result = parseUrl(url)
-    // Get read later list
-    const list = await getReadLaterList(result[keyTypePage])
-    // Add document to read later list
-    list.push(result[keyTypeDocument])
-    // Save storage
-    const data = {}
-    data[result[keyTypePage]] = {}
-    data[result[keyTypePage]][keyTypeList] = list
-    chrome.storage.local.set(data)
+    if (!isObjectEmpty(result)) {
+        // Get read later list
+        const list = await getReadLaterList(result[keyTypePage])
+        // Add document to read later list
+        list.push(result[keyTypeDocument])
+        // Save storage
+        const data = {}
+        data[result[keyTypePage]] = {}
+        data[result[keyTypePage]][keyTypeList] = list
+        chrome.storage.local.set(data)
+    }
 }
 
 /**
@@ -111,6 +113,17 @@ function parseUrl(url) {
     }
     // Return value
     return data
+}
+
+/// Utility method below
+
+/**
+ * Check object is empty or not
+ * @param {object} obejct Any object
+ * @returns {bool} Return true when object is empty
+ */
+function isObjectEmpty(obejct) {
+    return Object.keys(obejct).length === 0 && obejct.constructor === Object
 }
 
 /**
