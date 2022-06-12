@@ -1,21 +1,33 @@
 /// Common Constants
 
+// Site value
+const siteValues = [
+    {
+        "key": "namu",
+        "regex": /namu\.wiki\/w\//,
+        "url": "namu.wiki/w/"
+    },
+]
+
 // Page Keys
 const keyPageUnknown = "unknown"
-const keyPageNamuWiki = "namu"
-
-// Actions
-const actionInsertCSS = "insertCSS"
-const actionOpenDocument = "openDoc"
 
 // Data Access Keys
 const keyTypeList = "list"
 const keyTypePage = "page"
 const keyTypeDocument = "doc"
 
+// Site value keys
+const keySiteKey = "key"
+const keySiteRegex = "regex"
+const keySiteUrl = "url"
+
+// Actions
+const actionInsertCSS = "insertCSS"
+const actionOpenDocument = "openDoc"
+
 // Regex for check url
 const reProtocol = /https{0,1}:\/\//
-const reNamuWiki = /namu\.wiki\/w\//
 
 /// End of Common Constants
 
@@ -46,10 +58,14 @@ let mPageUrl = ""
 window.onload = function () {
     let active = false
     // Check url
-    if (reNamuWiki.test(document.URL)) { // is NamuWiki
-        active = true
-        mKeyPage = keyPageNamuWiki
-        mPageUrl = "namu.wiki/w/"
+    for(var i=0; i < siteValues.length; i++) {
+        const regex = siteValues[i][keySiteRegex]
+        if (regex.test(document.URL)) { // URL is supported site
+            active = true
+            mKeyPage = siteValues[i][keySiteKey]
+            mPageUrl = siteValues[i][keySiteUrl]
+            break
+        }
     }
     // Show read later bar when active
     if (active) {

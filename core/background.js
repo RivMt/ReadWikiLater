@@ -1,21 +1,33 @@
 /// Common Constants
 
+// Site value
+const siteValues = [
+    {
+        "key": "namu",
+        "regex": /namu\.wiki\/w\//,
+        "url": "namu.wiki/w/"
+    },
+]
+
 // Page Keys
 const keyPageUnknown = "unknown"
-const keyPageNamuWiki = "namu"
-
-// Actions
-const actionInsertCSS = "insertCSS"
-const actionOpenDocument = "openDoc"
 
 // Data Access Keys
 const keyTypeList = "list"
 const keyTypePage = "page"
 const keyTypeDocument = "doc"
 
+// Site value keys
+const keySiteKey = "key"
+const keySiteRegex = "regex"
+const keySiteUrl = "url"
+
+// Actions
+const actionInsertCSS = "insertCSS"
+const actionOpenDocument = "openDoc"
+
 // Regex for check url
 const reProtocol = /https{0,1}:\/\//
-const reNamuWiki = /namu\.wiki\/w\//
 
 /// End of Common Constants
 
@@ -107,9 +119,13 @@ function parseUrl(url) {
     let link = url.replace(reProtocol, "")
     const data = {}
     // Check url
-    if (reNamuWiki.test(link)) { // is NamuWiki
-        data[keyTypeDocument] = link.replace(reNamuWiki, "")
-        data[keyTypePage] = keyPageNamuWiki
+    for(var i=0; i < siteValues.length; i++) {
+        const regex = siteValues[i][keySiteRegex]
+        if (regex.test(url)) { // URL is supported site
+            data[keyTypeDocument] = link.replace(regex, "")
+            data[keyTypePage] = siteValues[i][keySiteKey]
+            break
+        }
     }
     // Return value
     return data
