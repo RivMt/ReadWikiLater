@@ -210,6 +210,17 @@ async function removeItem(keyPage, name) {
     }
 }
 
+/// Utility method below
+
+/**
+ * Check object is empty or not
+ * @param {object} obejct Any object
+ * @returns {bool} Return true when object is empty
+ */
+ function isObjectEmpty(obejct) {
+    return Object.keys(obejct).length === 0 && obejct.constructor === Object
+}
+
 /**
  * Get list of read later items for target page
  * @description If it does not exists, return empty list
@@ -219,9 +230,7 @@ async function removeItem(keyPage, name) {
 async function getReadLaterList(keyPage) {
     const result = await chrome.storage.local.get(keyPage)
     if (result != undefined && result[keyPage] != undefined && result[keyPage][keyTypeList] != undefined) {
-        console.log(result[keyPage][keyTypeList])
         return result[keyPage][keyTypeList]
     }
-    console.log("empty")
     return []
 }
