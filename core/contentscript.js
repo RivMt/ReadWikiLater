@@ -50,6 +50,7 @@ const iconClose = "M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41
 // HTML attributes
 const htmlReadLaterBarId = "extReadLaterBar"
 const htmlReadLaterItemClass = "extReadLaterItem"
+const htmlReadLaterItemBoxClass = "extReadLaterItemBox"
 const htmlReadLaterItemNameClass = "extReadLaterItemName"
 const htmlReadLaterItemCloseClass = "extReadLaterItemClose"
 const htmlReadLaterItemCloseIconClass = "extReadLaterItemCloseIcon"
@@ -172,7 +173,10 @@ async function createReadLaterItems() {
             // Item Parent
             const item = document.createElement('div')
             item.setAttribute('class', htmlReadLaterItemClass)
-            item.addEventListener('click', () => {
+            // Item Click Box
+            const box = document.createElement('div')
+            box.setAttribute('class', htmlReadLaterItemBoxClass)
+            box.addEventListener('click', () => {
                 onItemClicked(uri)
             })
             // Name
@@ -197,7 +201,8 @@ async function createReadLaterItems() {
             // Construct tree
             svg.appendChild(path)
             close.appendChild(svg)
-            item.appendChild(p)
+            box.appendChild(p)
+            item.appendChild(box)
             item.appendChild(close)
             bar.appendChild(item)
         }
