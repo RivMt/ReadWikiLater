@@ -1,0 +1,46 @@
+/* Container ID */
+#extReadLaterBar {
+    padding: 0;
+    display: inline-block;
+    position: fixed;
+    width: 100%;
+    height: 5%;
+    bottom: 0%;
+    right: 0%;
+    border: none;
+    background-color: transparent;
+    z-index: 9999;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+}
+
+/* Read Later Document Item */
+.extReadLaterItem {
+    margin: 4px;
+    padding: 4px;
+    padding-left: 8px;
+    padding-right: 8px;
+    border: 1px solid #ccc;
+    background-color: white;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+}
+
+/* Read Later Document Item Name */
+p.extReadLaterItemName {
+    margin: 0;
+    padding: 0;
+}
+
+/* Read Later Document Item Close Button */
+div.extReadLaterItemClose {
+    margin: 0;
+    margin-left: 8px;
+    padding: 0;
+}
+svg.extReadLaterItemCloseIcon {
+    width: 24px;
+    height: 24px;
+}
