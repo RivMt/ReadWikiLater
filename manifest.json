@@ -1,0 +1,57 @@
+{
+    "author": "RivMt",
+    "name": "__MSG_appName__",
+    "description": "__MSG_appDesc__",
+    "version": "0.0.1",
+    "manifest_version": 3,
+    "default_locale": "en_US",
+    "action": {
+        "default_icon": {
+            "16": "images/icon-16.png",
+            "24": "images/icon-24.png",
+            "32": "images/icon-32.png",
+            "48": "images/icon-48.png",
+            "72": "images/icon-72.png",
+            "96": "images/icon-96.png",
+            "128": "images/icon-128.png"
+        },
+        "default_popup": "popup/popup.html"
+    },
+    "permissions": [
+        "storage",
+        "activeTab",
+        "contextMenus",
+        "tabs",
+        "scripting"
+    ],
+    "host_permissions": [
+        "http://namu.wiki/*",
+        "https://namu.wiki/*",
+        "http://en.wikipedia.org/*",
+        "https://en.wikipedia.org/*"
+    ],
+    "background": {
+        "service_worker": "core/background.js"
+    },
+    "content_scripts": [
+        {
+            "matches": [
+                "http://*/*",
+                "https://*/*"
+            ],
+            "js": [
+                "core/contentscript.js"
+            ],
+            "run_at": "document_start"
+        }
+    ],
+    "icons": {
+        "16": "images/icon-16.png",
+        "24": "images/icon-24.png",
+        "32": "images/icon-32.png",
+        "48": "images/icon-48.png",
+        "72": "images/icon-72.png",
+        "96": "images/icon-96.png",
+        "128": "images/icon-128.png"
+    }
+}
