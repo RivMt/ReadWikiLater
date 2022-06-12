@@ -1,11 +1,11 @@
 {
     "appName": {
-      "message": "Wiki Later"
+      "message": "Read Wiki Later"
     },
     "appDesc": {
-      "message": "Que wiki documents at read later"
+      "message": "Que wiki documents into list for after read"
     },
     "menuAddReadLater": {
-      "message": "Add to read later"
+      "message": "Add to list"
     }
   }
