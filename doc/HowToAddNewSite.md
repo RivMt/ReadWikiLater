@@ -45,3 +45,7 @@ For example, Wikipedia's url is `https://{langCode}.wikipedia.org/wiki/SOME-DOCU
 ## Add site-specific css ##
 
 Add site-specific css file to `core/styles`. File name must same as `siteValues`'s key name.
+
+## Add site url to manifest.json
+
+Add site url to manifest.json's `host_permissions` section.
