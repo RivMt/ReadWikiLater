@@ -1,21 +1,26 @@
-// Context Menu ID
-const menuAddReadLaterId = "contextMenuAddReadLater"
+/// Common Constants
 
 // Page Keys
 const keyPageUnknown = "unknown"
 const keyPageNamuWiki = "namu"
+
+// Actions
+const actionInsertCSS = "insertCSS"
+const actionOpenDocument = "openDoc"
 
 // Data Access Keys
 const keyTypeList = "list"
 const keyTypePage = "page"
 const keyTypeDocument = "doc"
 
-// Actions
-const actionInsertCSS = "insertCSS"
-
 // Regex for check url
 const reProtocol = /https{0,1}:\/\//
 const reNamuWiki = /namu\.wiki\/w\//
+
+/// End of Common Constants
+
+// Context Menu ID
+const menuAddReadLaterId = "contextMenuAddReadLater"
 
 /// Init extension
 
@@ -54,6 +59,15 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                     tabId: sender.tab.id
                 }
             })
+            sendResponse({
+                "result": true
+            })
+            break
+        // Open document
+        case actionOpenDocument:
+            const header = "https://"
+            const url = header + message.pageUrl + message.uri
+            chrome.tabs.update(sender.tab.id, {"url": url})
             sendResponse({
                 "result": true
             })

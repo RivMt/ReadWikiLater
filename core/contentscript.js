@@ -1,14 +1,25 @@
+/// Common Constants
+
 // Page Keys
 const keyPageUnknown = "unknown"
 const keyPageNamuWiki = "namu"
 
 // Actions
 const actionInsertCSS = "insertCSS"
+const actionOpenDocument = "openDoc"
 
 // Data Access Keys
 const keyTypeList = "list"
 const keyTypePage = "page"
 const keyTypeDocument = "doc"
+
+// Regex for check url
+const reProtocol = /https{0,1}:\/\//
+const reNamuWiki = /namu\.wiki\/w\//
+
+/// End of Common Constants
+
+/// Script-only Constants
 
 // For dynamic SVG injection
 const SVG_NS = 'http://www.w3.org/2000/svg';
@@ -16,15 +27,16 @@ const SVG_NS = 'http://www.w3.org/2000/svg';
 // SVG Icon Path
 const iconClose = "M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"
 
-// HTML class and id
+// HTML attributes
 const htmlReadLaterBarId = "extReadLaterBar"
 const htmlReadLaterItemClass = "extReadLaterItem"
 const htmlReadLaterItemNameClass = "extReadLaterItemName"
 const htmlReadLaterItemCloseClass = "extReadLaterItemClose"
 const htmlReadLaterItemCloseIconClass = "extReadLaterItemCloseIcon"
 
-const reNamuWiki = /namu\.wiki\/w\//
+/// End of Script-only Constants
 
+// Global variables
 let mKeyPage = keyPageUnknown
 let mPageUrl = ""
 
@@ -65,6 +77,19 @@ function requestInsertCSS(keyPage) {
     )
 }
 
+function requestOpenDocument(keyPage, uri) {
+    const data = {
+        "action": actionOpenDocument,
+        "uri": uri,
+        "pageUrl": mPageUrl
+    }
+    data[keyTypePage] = keyPage
+    chrome.runtime.sendMessage(
+        data,
+        function (response) {}
+    )
+}
+
 function createReadLaterBar() {
     const bar = document.getElementById(htmlReadLaterBarId)
     if (bar == null) {
@@ -90,21 +115,22 @@ async function createReadLaterItems() {
         const list = await getReadLaterList(mKeyPage)
         console.log("Refresh: " + list.length.toString())
         for (var i = 0; i < list.length; i++) {
+            const uri = list[i]
             // Item Parent
             const item = document.createElement('div')
             item.setAttribute('class', htmlReadLaterItemClass)
             item.addEventListener('click', () => {
-                onItemClicked(name)
+                onItemClicked(uri)
             })
             // Name
-            const name = document.createElement('p')
-            name.setAttribute('class', htmlReadLaterItemNameClass)
-            name.innerText = decodeURI(list[i])
+            const p = document.createElement('p')
+            p.setAttribute('class', htmlReadLaterItemNameClass)
+            p.innerText = decodeURI(uri)
             // Close Button
             const close = document.createElement('div')
             close.setAttribute('class', htmlReadLaterItemCloseClass)
             close.addEventListener('click', () => {
-                onCloseClicked(name)
+                onCloseClicked(uri)
             })
             // SVG
             const svg = document.createElementNS(SVG_NS, 'svg')
@@ -118,7 +144,7 @@ async function createReadLaterItems() {
             // Construct tree
             svg.appendChild(path)
             close.appendChild(svg)
-            item.appendChild(name)
+            item.appendChild(p)
             item.appendChild(close)
             bar.appendChild(item)
         }
@@ -131,12 +157,7 @@ async function createReadLaterItems() {
 
 function onItemClicked(name) {
     // Open document
-    const header = "https://"
-    const url = header + mPageUrl + name
-    chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-        var tab = tabs[0];
-        chrome.tabs.update(tab.id, {url: url});
-    });
+    requestOpenDocument(mKeyPage, name)
     // Remove item
     removeItem(mKeyPage, name)
 }
