@@ -18,6 +18,12 @@ const siteValues = [
         "regex": /librewiki\.net\/wiki\//,
         "url": "librewiki.net/wiki/"
     },
+    {
+        "key": "fandom",
+        "regex": /[a-z]{1,}\.fandom\.com\/wiki\//,
+        "url": "%l.fandom.com/wiki/",
+        "exLang": /\.fandom\.com\/wiki\/.+/
+    },
 ]
 
 // Page Keys

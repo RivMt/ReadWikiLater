@@ -30,7 +30,9 @@
         "http://*.wikipedia.org/*",
         "https://*.wikipedia.org/*",
         "http://librewiki.net/*",
-        "https://librewiki.net/*"
+        "https://librewiki.net/*",
+        "http://*.fandom.com/*",
+        "https://*.fandom.com/*"
     ],
     "background": {
         "service_worker": "core/background.js"
