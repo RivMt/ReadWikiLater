@@ -29,7 +29,7 @@
 
 ## 개발과 기여 ##
 
-소스코드는 GPLv3로 배포됩니다.
+소스코드는 **GPLv3**로 배포됩니다.
 
 모든 형태의 기여를 환영합니다.
 
@@ -62,6 +62,8 @@ The reading list is displayed at the bottom of the screen, and you can click the
 
 ## Contribution ##
 
-Source code is distributed in GPLv3.
+Source code is distributed in **GPLv3**.
 
 We welcome all forms of contribution.
+
+If you want to add new wiki sites, see [Add new wiki site]((doc/HowToAddNewSite.md)).
