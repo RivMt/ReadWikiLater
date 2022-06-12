@@ -27,8 +27,8 @@
     "host_permissions": [
         "http://namu.wiki/*",
         "https://namu.wiki/*",
-        "http://en.wikipedia.org/*",
-        "https://en.wikipedia.org/*"
+        "http://*.wikipedia.org/*",
+        "https://*.wikipedia.org/*"
     ],
     "background": {
         "service_worker": "core/background.js"

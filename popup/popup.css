@@ -1,0 +1,56 @@
+body {
+    min-width: 300px;
+}
+
+header {
+    background: #059be6;
+    margin: 0;
+    padding: 0;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    color: white;
+}
+
+header > p {
+    text-align: right;
+}
+
+h1 {
+    text-align: center;
+}
+
+.footerbar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.iconButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+a.iconButton:link {
+    color: dimgray;
+}
+a.iconButton:visited {
+    color: dimgray;
+}
+a.iconButton:hover {
+    color: #059be6;
+    background: #dddddd;
+}
+a.iconButton:active {
+    color: white;
+    background-color: #dddddd;
+}
+
+
+.svgIcon {
+    width: 24px;
+    height: 24px;
+    display: block;
+    margin: 4px;
+}

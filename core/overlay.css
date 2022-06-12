@@ -28,6 +28,15 @@
     align-items: center;
 }
 
+/* Read Later Document Item Box (For click) */
+.extReadLaterItemBox {
+    cursor: pointer;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+}
+
 /* Read Later Document Item Name */
 p.extReadLaterItemName {
     margin: 0;
@@ -39,8 +48,10 @@ div.extReadLaterItemClose {
     margin: 0;
     margin-left: 8px;
     padding: 0;
+    cursor: pointer;
 }
 svg.extReadLaterItemCloseIcon {
     width: 24px;
     height: 24px;
+    color: #5f6368
 }
