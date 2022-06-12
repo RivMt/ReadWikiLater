@@ -7,6 +7,12 @@ const siteValues = [
         "regex": /namu\.wiki\/w\//,
         "url": "namu.wiki/w/"
     },
+    {
+        "key": "wikipedia",
+        "regex": /[a-z][a-z]\.wikipedia\.org\/wiki\//,
+        "url": "%l.wikipedia.org/wiki/",
+        "exLang": /\.wikipedia\.org\/wiki\/.+/
+    },
 ]
 
 // Page Keys
@@ -21,6 +27,7 @@ const keyTypeDocument = "doc"
 const keySiteKey = "key"
 const keySiteRegex = "regex"
 const keySiteUrl = "url"
+const keySiteExLang = "exLang"
 
 // Actions
 const actionInsertCSS = "insertCSS"
@@ -28,6 +35,7 @@ const actionOpenDocument = "openDoc"
 
 // Regex for check url
 const reProtocol = /https{0,1}:\/\//
+const reLang = /\%l/
 
 /// End of Common Constants
 
@@ -51,6 +59,7 @@ const htmlReadLaterItemCloseIconClass = "extReadLaterItemCloseIcon"
 // Global variables
 let mKeyPage = keyPageUnknown
 let mPageUrl = ""
+let mExLang = /XXXXXXXXXXXXXX/
 
 /// Init page
 
@@ -64,6 +73,10 @@ window.onload = function () {
             active = true
             mKeyPage = siteValues[i][keySiteKey]
             mPageUrl = siteValues[i][keySiteUrl]
+            // If pageUrl has language parameter, hold exclude-lang code regex
+            if (reLang.test(mPageUrl)) {
+                mExLang = siteValues[i][keySiteExLang]
+            }
             break
         }
     }
@@ -103,10 +116,17 @@ function requestInsertCSS(keyPage) {
  * @param {string} uri URI of document to open
  */
 function requestOpenDocument(keyPage, uri) {
+    let pageUrl = mPageUrl
+    // Check lang parameter exists
+    if (reLang.test(pageUrl)) {
+        const lang = document.URL.replace(mExLang, "").replace(reProtocol, "") // Extract lang code
+        console.log("Lang: " + lang)
+        pageUrl = mPageUrl.replace(reLang, lang)
+    }
     const data = {
         "action": actionOpenDocument,
         "uri": uri,
-        "pageUrl": mPageUrl
+        "pageUrl": pageUrl
     }
     data[keyTypePage] = keyPage
     chrome.runtime.sendMessage(

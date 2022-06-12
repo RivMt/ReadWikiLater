@@ -7,6 +7,12 @@ const siteValues = [
         "regex": /namu\.wiki\/w\//,
         "url": "namu.wiki/w/"
     },
+    {
+        "key": "wikipedia",
+        "regex": /[a-z][a-z]\.wikipedia\.org\/wiki\//,
+        "url": "%l.wikipedia.org/wiki/",
+        "exLang": /\.wikipedia\.org\/wiki\/.+/
+    },
 ]
 
 // Page Keys
@@ -28,6 +34,7 @@ const actionOpenDocument = "openDoc"
 
 // Regex for check url
 const reProtocol = /https{0,1}:\/\//
+const reLang = /\%l/
 
 /// End of Common Constants
 
