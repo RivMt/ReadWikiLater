@@ -92,9 +92,12 @@ window.onload = function () {
             break
         }
     }
+
+    // Create read later bar
+    createReadLaterBar()
+
     // Show read later bar when active
     if (active) {
-        createReadLaterBar()
         createReadLaterItems()
         requestInsertCSS(mKeyPage)
     }
