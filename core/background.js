@@ -13,6 +13,11 @@ const siteValues = [
         "url": "%l.wikipedia.org/wiki/",
         "exLang": /\.wikipedia\.org\/wiki\/.+/
     },
+    {
+        "key": "libre",
+        "regex": /librewiki\.net\/wiki\//,
+        "url": "librewiki.net/wiki/"
+    },
 ]
 
 // Page Keys

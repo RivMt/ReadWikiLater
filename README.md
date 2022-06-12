@@ -24,6 +24,7 @@
 
 * 위키백과 (모든 언어)
 * 나무위키
+* 리브레 위키
 
 지원하는 위키는 계속 추가될 예정입니다.
 
@@ -59,6 +60,9 @@ The reading list is displayed at the bottom of the screen, and you can click the
 
 * Wikipedia (All languages)
 * NamuWiki (Korean)
+* LibreWiki (Korean)
+
+The corresponding wiki will continue to be added.
 
 ## Contribution ##
 

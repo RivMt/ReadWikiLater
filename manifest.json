@@ -28,7 +28,9 @@
         "http://namu.wiki/*",
         "https://namu.wiki/*",
         "http://*.wikipedia.org/*",
-        "https://*.wikipedia.org/*"
+        "https://*.wikipedia.org/*",
+        "http://librewiki.net/*",
+        "https://librewiki.net/*"
     ],
     "background": {
         "service_worker": "core/background.js"
