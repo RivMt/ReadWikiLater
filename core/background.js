@@ -69,15 +69,16 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         // Insert CSS
         case actionInsertCSS:
             // Insert common CSS
-            console.log("Insert CSS: " + sender.tab.id.toString())
             chrome.scripting.insertCSS({
                 files: [
-                    'core/overlay.css'
+                    'core/overlay.css',
+                    'core/styles/' + message.key + '.css'
                 ],
                 target: {
                     tabId: sender.tab.id
                 }
             })
+            // Send response
             sendResponse({
                 "result": true
             })

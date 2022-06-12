@@ -101,7 +101,8 @@ window.onload = function () {
  */
 function requestInsertCSS(keyPage) {
     const data = {
-        "action": actionInsertCSS
+        "action": actionInsertCSS,
+        "key": keyPage
     }
     data[keyTypePage] = keyPage
     chrome.runtime.sendMessage(
