@@ -66,6 +66,10 @@ window.onload = function () {
 
 /// END Init
 
+/**
+ * Request background.js to insert css file to current tab
+ * @param {string} keyPage Key of Page
+ */
 function requestInsertCSS(keyPage) {
     const data = {
         "action": actionInsertCSS
@@ -77,6 +81,11 @@ function requestInsertCSS(keyPage) {
     )
 }
 
+/**
+ * Request background.js to open document to current tab
+ * @param {string} keyPage Key of page
+ * @param {string} uri URI of document to open
+ */
 function requestOpenDocument(keyPage, uri) {
     const data = {
         "action": actionOpenDocument,
@@ -90,6 +99,10 @@ function requestOpenDocument(keyPage, uri) {
     )
 }
 
+/**
+ * Create read later bar
+ * @returns {bool} Return true when bar has been created
+ */
 function createReadLaterBar() {
     const bar = document.getElementById(htmlReadLaterBarId)
     if (bar == null) {
@@ -104,7 +117,10 @@ function createReadLaterBar() {
     return false
 }
 
-// Precondition: Bar exists
+/**
+ * Create items into read later bar
+ * @returns {bool} Return true items have been created
+ */
 async function createReadLaterItems() {
     // Find bar
     const bar = document.getElementById(htmlReadLaterBarId)
@@ -155,6 +171,10 @@ async function createReadLaterItems() {
     return false
 }
 
+/**
+ * Trigger when read later bar's item is clicked
+ * @param {string} name Name of document
+ */
 function onItemClicked(name) {
     // Open document
     requestOpenDocument(mKeyPage, name)
@@ -162,11 +182,20 @@ function onItemClicked(name) {
     removeItem(mKeyPage, name)
 }
 
+/**
+ * Trigger when read later bar's item's close button is clicked
+ * @param {string} name Name of document
+ */
 function onCloseClicked(name) {
     // Remove item
     removeItem(mKeyPage, name)
 }
 
+/**
+ * Remove item from Google Chrome's storage using its name
+ * @param {string} keyPage Key of page
+ * @param {string} name Name of document
+ */
 async function removeItem(keyPage, name) {
     const list = await getReadLaterList(keyPage)
     const index = list.indexOf(name)
@@ -181,6 +210,12 @@ async function removeItem(keyPage, name) {
     }
 }
 
+/**
+ * Get list of read later items for target page
+ * @description If it does not exists, return empty list
+ * @param {string} keyPage Key of page
+ * @returns {Array} Return list of read later items for target page
+ */
 async function getReadLaterList(keyPage) {
     const result = await chrome.storage.local.get(keyPage)
     if (result != undefined && result[keyPage] != undefined && result[keyPage][keyTypeList] != undefined) {

@@ -77,6 +77,10 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
 /// END Init
 
+/**
+ * Add document to read later list
+ * @param {string} url Full path of document to add
+ */
 async function addReadLater(url) {
     // Parse url
     const result = parseUrl(url)
@@ -91,6 +95,11 @@ async function addReadLater(url) {
     chrome.storage.local.set(data)
 }
 
+/**
+ * Parse url to analyze document type and document name if url is valid. Otherwise, return empty
+ * @param {string} url Full path of document
+ * @returns {object} Include document type and name when url is valid
+ */
 function parseUrl(url) {
     // Remove protocol
     let link = url.replace(reProtocol, "")
@@ -104,6 +113,12 @@ function parseUrl(url) {
     return data
 }
 
+/**
+ * Get list of read later items for target page
+ * @description If it does not exists, return empty list
+ * @param {string} keyPage Key of page
+ * @returns {Array} Return list of read later items for target page
+ */
 async function getReadLaterList(keyPage) {
     const result = await chrome.storage.local.get(keyPage)
     if (result != undefined && result[keyPage] != undefined && result[keyPage][keyTypeList] != undefined) {
