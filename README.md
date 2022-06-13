@@ -1,5 +1,7 @@
 **ENGLISH BELOW**
 
+![Icon](images/icon-128.png)
+
 # 나중에 위키 읽기 #
 
 위키 사이트를 이용하다보면 읽고 싶은 문서가 많아서 미리 여러 탭을 띄워두는 경우가 많습니다.
@@ -12,7 +14,7 @@
 
 ![우클릭 메뉴](doc/res/rightclick.ko.png)
 
-보고 싶은 문서에 마우스를 대고 우클릭을 하면 나오는 메뉴를 누르면 읽기 목록에 바로 추가됩니다.
+보고 싶은 문서에 우클릭을 하면 나오는 메뉴의 버튼을 눌러서 읽기 목록에 추가할 수 있습니다.
 
 ![확장 사용 화면](doc/res/use.ko.png)
 
@@ -24,6 +26,8 @@
 
 * 위키백과 (모든 언어)
 * 나무위키
+* 리브레 위키
+* FANDOM
 
 지원하는 위키는 계속 추가될 예정입니다.
 
@@ -58,7 +62,11 @@ The reading list is displayed at the bottom of the screen, and you can click the
 ## Supported Wiki sites ##
 
 * Wikipedia (All languages)
+* FANDOM
 * NamuWiki (Korean)
+* LibreWiki (Korean)
+
+The corresponding wiki will continue to be added.
 
 ## Contribution ##
 

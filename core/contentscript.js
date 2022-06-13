@@ -13,6 +13,17 @@ const siteValues = [
         "url": "%l.wikipedia.org/wiki/",
         "exLang": /\.wikipedia\.org\/wiki\/.+/
     },
+    {
+        "key": "libre",
+        "regex": /librewiki\.net\/wiki\//,
+        "url": "librewiki.net/wiki/"
+    },
+    {
+        "key": "fandom",
+        "regex": /[a-z]{1,}\.fandom\.com\/wiki\//,
+        "url": "%l.fandom.com/wiki/",
+        "exLang": /\.fandom\.com\/wiki\/.+/
+    },
 ]
 
 // Page Keys
@@ -81,9 +92,12 @@ window.onload = function () {
             break
         }
     }
+
+    // Create read later bar
+    createReadLaterBar()
+
     // Show read later bar when active
     if (active) {
-        createReadLaterBar()
         createReadLaterItems()
         requestInsertCSS(mKeyPage)
     }
