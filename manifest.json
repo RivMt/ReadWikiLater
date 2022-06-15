@@ -2,7 +2,7 @@
     "author": "RivMt",
     "name": "__MSG_appName__",
     "description": "__MSG_appDesc__",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "manifest_version": 3,
     "default_locale": "en_US",
     "action": {
