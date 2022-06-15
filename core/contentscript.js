@@ -129,9 +129,9 @@ function requestInsertCSS(keyPage) {
 /**
  * Request background.js to open document to current tab
  * @param {string} keyPage Key of page
- * @param {string} uri URI of document to open
+ * @param {string} name Name of document to open
  */
-function requestOpenDocument(keyPage, uri) {
+function requestOpenDocument(keyPage, name) {
     let pageUrl = mPageUrl
     // Check lang parameter exists
     if (reLang.test(pageUrl)) {
@@ -141,7 +141,7 @@ function requestOpenDocument(keyPage, uri) {
     }
     const data = {
         "action": actionOpenDocument,
-        "uri": uri,
+        "name": name,
         "pageUrl": pageUrl
     }
     data[keyTypePage] = keyPage

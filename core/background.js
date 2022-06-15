@@ -97,7 +97,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         // Open document
         case actionOpenDocument:
             const header = "https://"
-            const url = header + message.pageUrl + message.uri
+            const url = header + message.pageUrl + message.name
             chrome.tabs.update(sender.tab.id, {"url": url})
             sendResponse({
                 "result": true
