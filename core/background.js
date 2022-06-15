@@ -4,25 +4,19 @@
 const siteValues = [
     {
         "key": "namu",
-        "regex": /namu\.wiki\/w\//,
-        "url": "namu.wiki/w/"
+        "regex": /namu\.wiki\/w\//
     },
     {
         "key": "wikipedia",
-        "regex": /[a-z][a-z]\.wikipedia\.org\/wiki\//,
-        "url": "%l.wikipedia.org/wiki/",
-        "exLang": /\.wikipedia\.org\/wiki\/.+/
+        "regex": /[a-z][a-z]\.wikipedia\.org\/wiki\//
     },
     {
         "key": "libre",
-        "regex": /librewiki\.net\/wiki\//,
-        "url": "librewiki.net/wiki/"
+        "regex": /librewiki\.net\/wiki\//
     },
     {
         "key": "fandom",
-        "regex": /[a-z]{1,}\.fandom\.com\/wiki\//,
-        "url": "%l.fandom.com/wiki/",
-        "exLang": /\.fandom\.com\/wiki\/.+/
+        "regex": /[a-z]{1,}\.fandom\.com\/([a-z]{2}\/)?wiki\//
     },
 ]
 
@@ -37,7 +31,6 @@ const keyTypeDocument = "doc"
 // Site value keys
 const keySiteKey = "key"
 const keySiteRegex = "regex"
-const keySiteUrl = "url"
 
 // Actions
 const actionInsertCSS = "insertCSS"
@@ -97,7 +90,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         // Open document
         case actionOpenDocument:
             const header = "https://"
-            const url = header + message.pageUrl + message.name
+            const url = header + message.url
             chrome.tabs.update(sender.tab.id, {"url": url})
             sendResponse({
                 "result": true
@@ -118,6 +111,7 @@ async function addReadLater(url) {
     if (!isObjectEmpty(result)) {
         // Get read later list
         const list = await getReadLaterList(result[keyTypePage])
+        // TODO: Check same url exists
         // Add document to read later list
         list.push(result[keyTypeDocument])
         // Save storage
@@ -141,7 +135,7 @@ function parseUrl(url) {
     for(var i=0; i < siteValues.length; i++) {
         const regex = siteValues[i][keySiteRegex]
         if (regex.test(url)) { // URL is supported site
-            data[keyTypeDocument] = link.replace(regex, "")
+            data[keyTypeDocument] = link
             data[keyTypePage] = siteValues[i][keySiteKey]
             break
         }

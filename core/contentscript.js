@@ -4,25 +4,19 @@
 const siteValues = [
     {
         "key": "namu",
-        "regex": /namu\.wiki\/w\//,
-        "url": "namu.wiki/w/"
+        "regex": /namu\.wiki\/w\//
     },
     {
         "key": "wikipedia",
-        "regex": /[a-z][a-z]\.wikipedia\.org\/wiki\//,
-        "url": "%l.wikipedia.org/wiki/",
-        "exLang": /\.wikipedia\.org\/wiki\/.+/
+        "regex": /[a-z][a-z]\.wikipedia\.org\/wiki\//
     },
     {
         "key": "libre",
-        "regex": /librewiki\.net\/wiki\//,
-        "url": "librewiki.net/wiki/"
+        "regex": /librewiki\.net\/wiki\//
     },
     {
         "key": "fandom",
-        "regex": /[a-z]{1,}\.fandom\.com\/wiki\//,
-        "url": "%l.fandom.com/wiki/",
-        "exLang": /\.fandom\.com\/wiki\/.+/
+        "regex": /[a-z]{1,}\.fandom\.com\/([a-z]{2}\/)?wiki\//
     },
 ]
 
@@ -37,8 +31,6 @@ const keyTypeDocument = "doc"
 // Site value keys
 const keySiteKey = "key"
 const keySiteRegex = "regex"
-const keySiteUrl = "url"
-const keySiteExLang = "exLang"
 
 // Actions
 const actionInsertCSS = "insertCSS"
@@ -70,8 +62,7 @@ const htmlReadLaterItemCloseIconClass = "extReadLaterItemCloseIcon"
 
 // Global variables
 let mKeyPage = keyPageUnknown
-let mPageUrl = ""
-let mExLang = /XXXXXXXXXXXXXX/
+let mRegex = /XXXXXXXXXXXXXX/
 
 /// Init page
 
@@ -84,11 +75,7 @@ window.onload = function () {
         if (regex.test(document.URL)) { // URL is supported site
             active = true
             mKeyPage = siteValues[i][keySiteKey]
-            mPageUrl = siteValues[i][keySiteUrl]
-            // If pageUrl has language parameter, hold exclude-lang code regex
-            if (reLang.test(mPageUrl)) {
-                mExLang = siteValues[i][keySiteExLang]
-            }
+            mRegex = siteValues[i][keySiteRegex]
             break
         }
     }
@@ -129,20 +116,12 @@ function requestInsertCSS(keyPage) {
 /**
  * Request background.js to open document to current tab
  * @param {string} keyPage Key of page
- * @param {string} name Name of document to open
+ * @param {string} url Url of document to open
  */
-function requestOpenDocument(keyPage, name) {
-    let pageUrl = mPageUrl
-    // Check lang parameter exists
-    if (reLang.test(pageUrl)) {
-        const lang = document.URL.replace(mExLang, "").replace(reProtocol, "") // Extract lang code
-        console.log("Lang: " + lang)
-        pageUrl = mPageUrl.replace(reLang, lang)
-    }
+function requestOpenDocument(keyPage, url) {
     const data = {
         "action": actionOpenDocument,
-        "name": name,
-        "pageUrl": pageUrl
+        "url": url,
     }
     data[keyTypePage] = keyPage
     chrome.runtime.sendMessage(
@@ -196,7 +175,7 @@ async function createReadLaterItems() {
             // Name
             const p = document.createElement('p')
             p.setAttribute('class', htmlReadLaterItemNameClass)
-            p.innerText = decodeURI(uri)
+            p.innerText = decodeURI(uri.replace(mRegex, ""))
             // Close Button
             const close = document.createElement('div')
             close.setAttribute('class', htmlReadLaterItemCloseClass)
@@ -229,32 +208,32 @@ async function createReadLaterItems() {
 
 /**
  * Trigger when read later bar's item is clicked
- * @param {string} name Name of document
+ * @param {string} url Url of document
  */
-function onItemClicked(name) {
+function onItemClicked(url) {
     // Open document
-    requestOpenDocument(mKeyPage, name)
+    requestOpenDocument(mKeyPage, url)
     // Remove item
-    removeItem(mKeyPage, name)
+    removeItem(mKeyPage, url)
 }
 
 /**
  * Trigger when read later bar's item's close button is clicked
- * @param {string} name Name of document
+ * @param {string} url Url of document
  */
-function onCloseClicked(name) {
+function onCloseClicked(url) {
     // Remove item
-    removeItem(mKeyPage, name)
+    removeItem(mKeyPage, url)
 }
 
 /**
- * Remove item from Google Chrome's storage using its name
+ * Remove item from Google Chrome's storage using its url
  * @param {string} keyPage Key of page
- * @param {string} name Name of document
+ * @param {string} url Url of document
  */
-async function removeItem(keyPage, name) {
+async function removeItem(keyPage, url) {
     const list = await getReadLaterList(keyPage)
-    const index = list.indexOf(name)
+    const index = list.indexOf(url)
     if (index > -1) {
         // Remove item
         list.splice(index, 1)
