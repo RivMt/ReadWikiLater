@@ -110,14 +110,17 @@ async function addReadLater(url) {
     if (!isObjectEmpty(result)) {
         // Get read later list
         const list = await getReadLaterList(result[keyTypePage])
-        // TODO: Check same url exists
-        // Add document to read later list
-        list.push(result[keyTypeDocument])
-        // Save storage
-        const data = {}
-        data[result[keyTypePage]] = {}
-        data[result[keyTypePage]][keyTypeList] = list
-        chrome.storage.local.set(data)
+        const document = result[keyTypeDocument]
+        // Check same url
+        if (list.indexOf(document) === -1) {
+            // Add document to read later list
+            list.push(document)
+            // Save storage
+            const data = {}
+            data[result[keyTypePage]] = {}
+            data[result[keyTypePage]][keyTypeList] = list
+            chrome.storage.local.set(data)
+        }
     }
 }
 
