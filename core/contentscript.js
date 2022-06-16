@@ -38,7 +38,6 @@ const actionOpenDocument = "openDoc"
 
 // Regex for check url
 const reProtocol = /https{0,1}:\/\//
-const reLang = /\%l/
 
 /// End of Common Constants
 
