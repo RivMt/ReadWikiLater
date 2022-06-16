@@ -71,16 +71,8 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     switch (message.action) {
         // Insert CSS
         case actionInsertCSS:
-            // Insert common CSS
-            chrome.scripting.insertCSS({
-                files: [
-                    'core/overlay.css',
-                    'core/styles/' + message.key + '.css'
-                ],
-                target: {
-                    tabId: sender.tab.id
-                }
-            })
+            // Insert CSS
+            insertCSS(sender.tab.id, message.key)
             // Send response
             sendResponse({
                 "result": true
@@ -99,6 +91,26 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 })
 
 /// END Init
+
+/**
+ * Insert proper CSS following its page to tab
+ * @param {number} tabId ID of tab to insert CSS
+ * @param {string} key Key of tab's url
+ */
+function insertCSS(tabId, key) {
+    // CSS List
+    const css = [
+        'core/overlay.css',
+        'core/styles/' + key + '.css'
+    ]
+    // Insert common CSS
+    chrome.scripting.insertCSS({
+        files: css,
+        target: {
+            tabId: tabId
+        }
+    })
+}
 
 /**
  * Add document to read later list
