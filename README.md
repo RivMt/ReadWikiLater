@@ -2,6 +2,8 @@
 
 ![Icon](images/icon-128.png)
 
+[![Available in the Chrome Web Store](doc/res/chrome-webstore.png)](https://chrome.google.com/webstore/detail/read-wiki-later/naockancieijnmadkapaofjfffdhaikm)
+
 # 나중에 위키 읽기 #
 
 위키 사이트를 이용하다보면 읽고 싶은 문서가 많아서 미리 여러 탭을 띄워두는 경우가 많습니다.
@@ -33,7 +35,7 @@
 
 ## 개발과 기여 ##
 
-소스코드는 **GPLv3**로 배포됩니다.
+리소스를 제외한 소스코드는 **GPLv3**로 배포됩니다.
 
 모든 형태의 기여를 환영합니다.
 
@@ -70,7 +72,7 @@ The corresponding wiki will continue to be added.
 
 ## Contribution ##
 
-Source code is distributed in **GPLv3**.
+Source code excluding resources is distributed in **GPLv3**.
 
 We welcome all forms of contribution.
 
