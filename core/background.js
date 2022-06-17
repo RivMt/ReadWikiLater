@@ -18,6 +18,10 @@ const siteValues = [
         "key": "fandom",
         "regex": /[a-z]{1,}\.fandom\.com\/([a-z]{2}\/)?wiki\//
     },
+    {
+        "key": "wikihow",
+        "regex": /[a-z]{2}\.wikihow\.com\//
+    },
 ]
 
 // Page Keys

@@ -30,6 +30,7 @@
 * 나무위키
 * 리브레 위키
 * FANDOM
+* WikiHow
 
 지원하는 위키는 계속 추가될 예정입니다.
 
@@ -63,8 +64,9 @@ The reading list is displayed at the bottom of the screen, and you can click the
 
 ## Supported Wiki sites ##
 
-* Wikipedia (All languages)
+* Wikipedia
 * FANDOM
+* WikiHow
 * NamuWiki (Korean)
 * LibreWiki (Korean)
 

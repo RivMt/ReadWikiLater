@@ -18,6 +18,10 @@ const siteValues = [
         "key": "fandom",
         "regex": /[a-z]{1,}\.fandom\.com\/([a-z]{2}\/)?wiki\//
     },
+    {
+        "key": "wikihow",
+        "regex": /[a-z]{2}\.wikihow\.com\//
+    },
 ]
 
 // Page Keys
@@ -159,7 +163,6 @@ async function createReadLaterItems() {
         bar.innerHTML = ""
         // Add items
         const list = await getReadLaterList(mKeyPage)
-        console.log("Refresh: " + list.length.toString())
         for (var i = 0; i < list.length; i++) {
             const uri = list[i]
             // Item Parent
