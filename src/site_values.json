@@ -6,7 +6,7 @@
         },
         {
             "key": "wikipedia",
-            "regex": "[a-z]{2}\\.wikipedia\\.org\/wiki\/"
+            "regex": "[a-z\\-]{2,}\\.wikipedia\\.org\/wiki\/"
         },
         {
             "key": "libre",
@@ -22,7 +22,7 @@
         },
         {
             "key": "archwiki",
-            "regex": "wiki\\.archlinux\\.org\/title\/"
+            "regex": "wiki\\.archlinux\\.org\/(title\/)?"
         }
     ],
     "version": 2
