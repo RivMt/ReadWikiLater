@@ -55,10 +55,11 @@ let mRegex = /XXXXXXXXXXXXXX/
 window.onload = async function () {
     let active = false
     // Check url
-    const siteValues = await getSiteValues()
+    const siteValues = (await getSiteValues())[keyOptionSiteValues]
     for(var i=0; i < siteValues.length; i++) {
         const regex = new RegExp(siteValues[i][keySiteRegex])
         if (regex.test(document.URL)) { // URL is supported site
+            console.log("Regex: " + regex.toString())
             active = true
             mKeyPage = siteValues[i][keySiteKey]
             mRegex = regex
@@ -259,9 +260,10 @@ async function getReadLaterList(keyPage) {
  * Get siteValues object from sync storage
  * @returns {object} Return legacy siteValues if storage does not have object
  */
- async function getSiteValues() {
+async function getSiteValues() {
     // Site value (Legacy)
-    const data = [
+    const data = {}
+    data[keyOptionSiteValues] = [
         {
             "key": "namu",
             "regex": "namu\.wiki\/w\/"
@@ -283,9 +285,13 @@ async function getReadLaterList(keyPage) {
             "regex": "\[a\-z\]\{2\}\.wikihow\.com\/"
         }
     ]
+    data[keyTypeVersion] = "0"
     // Get
     const result = await chrome.storage.sync.get(keyOptionSiteValues)
     if (result !== undefined && result[keyOptionSiteValues] !== undefined && !isObjectEmpty(result[keyOptionSiteValues])) {
+        console.log("Use local")
         return result[keyOptionSiteValues]
     }
+    console.log("Use in-code")
     return data
+}

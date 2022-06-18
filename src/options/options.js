@@ -59,7 +59,7 @@ function downloadSiteValues() {
                     // Make data object
                     const data = {}
                     data[keyOptionSiteValues] = json
-                    chrom.storage.sync.set(data)
+                    chrome.storage.sync.set(data)
                 } else {
                     console.log("Already updated")
                 }
@@ -101,7 +101,8 @@ async function getReadLaterList(keyPage) {
  */
 async function getSiteValues() {
     // Site value (Legacy)
-    const data = [
+    const data = {}
+    data[keyOptionSiteValues] = [
         {
             "key": "namu",
             "regex": "namu\.wiki\/w\/"
@@ -123,10 +124,11 @@ async function getSiteValues() {
             "regex": "\[a\-z\]\{2\}\.wikihow\.com\/"
         }
     ]
+    data[keyTypeVersion] = "0"
     // Get
     const result = await chrome.storage.sync.get(keyOptionSiteValues)
-    if (result !== undefined && result[keyOptionSiteValues] !== undefined && result[keyOptionSiteValues][keyTypeData] !== undefined && !isObjectEmpty(result[keyOptionSiteValues][keyTypeData])) {
-        return result[keyOptionSiteValues][keyTypeData]
+    if (result !== undefined && result[keyOptionSiteValues] !== undefined && !isObjectEmpty(result[keyOptionSiteValues])) {
+        return result[keyOptionSiteValues]
     }
     return data
 }
