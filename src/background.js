@@ -4,25 +4,23 @@
 const siteValues = [
     {
         "key": "namu",
-        "regex": /namu\.wiki\/w\//,
-        "url": "namu.wiki/w/"
+        "regex": /namu\.wiki\/w\//
     },
     {
         "key": "wikipedia",
-        "regex": /[a-z][a-z]\.wikipedia\.org\/wiki\//,
-        "url": "%l.wikipedia.org/wiki/",
-        "exLang": /\.wikipedia\.org\/wiki\/.+/
+        "regex": /[a-z][a-z]\.wikipedia\.org\/wiki\//
     },
     {
         "key": "libre",
-        "regex": /librewiki\.net\/wiki\//,
-        "url": "librewiki.net/wiki/"
+        "regex": /librewiki\.net\/wiki\//
     },
     {
         "key": "fandom",
-        "regex": /[a-z]{1,}\.fandom\.com\/wiki\//,
-        "url": "%l.fandom.com/wiki/",
-        "exLang": /\.fandom\.com\/wiki\/.+/
+        "regex": /[a-z]{1,}\.fandom\.com\/([a-z]{2}\/)?wiki\//
+    },
+    {
+        "key": "wikihow",
+        "regex": /[a-z]{2}\.wikihow\.com\//
     },
 ]
 
@@ -37,7 +35,6 @@ const keyTypeDocument = "doc"
 // Site value keys
 const keySiteKey = "key"
 const keySiteRegex = "regex"
-const keySiteUrl = "url"
 
 // Actions
 const actionInsertCSS = "insertCSS"
@@ -45,7 +42,6 @@ const actionOpenDocument = "openDoc"
 
 // Regex for check url
 const reProtocol = /https{0,1}:\/\//
-const reLang = /\%l/
 
 /// End of Common Constants
 
@@ -79,16 +75,8 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     switch (message.action) {
         // Insert CSS
         case actionInsertCSS:
-            // Insert common CSS
-            chrome.scripting.insertCSS({
-                files: [
-                    'core/overlay.css',
-                    'core/styles/' + message.key + '.css'
-                ],
-                target: {
-                    tabId: sender.tab.id
-                }
-            })
+            // Insert CSS
+            insertCSS(sender.tab.id, message.key)
             // Send response
             sendResponse({
                 "result": true
@@ -97,7 +85,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         // Open document
         case actionOpenDocument:
             const header = "https://"
-            const url = header + message.pageUrl + message.uri
+            const url = header + message.url
             chrome.tabs.update(sender.tab.id, {"url": url})
             sendResponse({
                 "result": true
@@ -109,6 +97,26 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 /// END Init
 
 /**
+ * Insert proper CSS following its page to tab
+ * @param {number} tabId ID of tab to insert CSS
+ * @param {string} key Key of tab's url
+ */
+function insertCSS(tabId, key) {
+    // CSS List
+    const css = [
+        'core/overlay.css',
+        'core/styles/' + key + '.css'
+    ]
+    // Insert common CSS
+    chrome.scripting.insertCSS({
+        files: css,
+        target: {
+            tabId: tabId
+        }
+    })
+}
+
+/**
  * Add document to read later list
  * @param {string} url Full path of document to add
  */
@@ -118,13 +126,17 @@ async function addReadLater(url) {
     if (!isObjectEmpty(result)) {
         // Get read later list
         const list = await getReadLaterList(result[keyTypePage])
-        // Add document to read later list
-        list.push(result[keyTypeDocument])
-        // Save storage
-        const data = {}
-        data[result[keyTypePage]] = {}
-        data[result[keyTypePage]][keyTypeList] = list
-        chrome.storage.local.set(data)
+        const document = result[keyTypeDocument]
+        // Check same url
+        if (list.indexOf(document) === -1) {
+            // Add document to read later list
+            list.push(document)
+            // Save storage
+            const data = {}
+            data[result[keyTypePage]] = {}
+            data[result[keyTypePage]][keyTypeList] = list
+            chrome.storage.local.set(data)
+        }
     }
 }
 
@@ -141,7 +153,7 @@ function parseUrl(url) {
     for(var i=0; i < siteValues.length; i++) {
         const regex = siteValues[i][keySiteRegex]
         if (regex.test(url)) { // URL is supported site
-            data[keyTypeDocument] = link.replace(regex, "")
+            data[keyTypeDocument] = link
             data[keyTypePage] = siteValues[i][keySiteKey]
             break
         }

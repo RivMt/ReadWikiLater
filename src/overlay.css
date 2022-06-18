@@ -13,6 +13,8 @@
     display: flex;
     justify-content: left;
     align-items: center;
+    overflow-x: auto;
+    white-space: nowrap;
 }
 
 /* Read Later Document Item */
