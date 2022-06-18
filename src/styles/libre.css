@@ -1,8 +1,29 @@
 .extReadLaterItem {
     border: 1px solid lightgray;
-    border-bottom: 2px solid lightgray;
-    border-right: 2px solid lightgray;
+    border-bottom: 1px solid lightgray;
+    border-right: 1px solid lightgray;
     border-top-right-radius: 2px;
     border-bottom-left-radius: 2px;
     border-bottom-right-radius: 2px;
+}
+
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+    /* Item */
+    .extReadLaterItem {
+        background-color: #000;
+        border: 1px solid #555;
+        border-bottom: 1px solid #555;
+        border-right: 1px solid #555;
+    }
+    
+    /* Close button icon */
+    svg.extReadLaterItemCloseIcon {
+        color: white;
+    }
+
+    /* Item name */
+    p.extReadLaterItemName {
+        color: white;
+    }
 }

@@ -1,12 +1,12 @@
 .extReadLaterItem {
     border: none;
-    background-color: #fa005a;
+    background-color: #ffc500;
 }
 
 p.extReadLaterItemName {
-    color: white;
+    color: #520044;
 }
 
 svg.extReadLaterItemCloseIcon {
-    color: white;
+    color: #520044;
 }
