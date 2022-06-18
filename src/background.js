@@ -133,6 +133,7 @@ async function parseUrl(url) {
     const data = {}
     // Check url
     const siteValues = await getSiteValues()
+    console.log(siteValues)
     for(var i=0; i < siteValues.length; i++) {
         const regex = new RegExp(siteValues[i][keySiteRegex])
         if (regex.test(url)) { // URL is supported site
@@ -179,23 +180,23 @@ async function getSiteValues() {
     const data = [
         {
             "key": "namu",
-            "regex": "/namu\\.wiki\/w\//"
+            "regex": "namu\.wiki\/w\/"
         },
         {
             "key": "wikipedia",
-            "regex": "/[a-z][a-z]\\.wikipedia\\.org\/wiki\//"
+            "regex": "\[a\-z\]\[a\-z\]\.wikipedia\.org\/wiki\/"
         },
         {
             "key": "libre",
-            "regex": "/librewiki\\.net\/wiki\//"
+            "regex": "librewiki\.net\/wiki\/"
         },
         {
             "key": "fandom",
-            "regex": "/[a-z]{1,}\\.fandom\\.com\/([a-z]{2}\/)?wiki\//"
+            "regex": "\[a\-z\]\{1\,\}\.fandom\.com\/\(\[a\-z\]\{2\}\/\)\?wiki\/"
         },
         {
             "key": "wikihow",
-            "regex": "/[a-z]{2}\\.wikihow\\.com\//"
+            "regex": "\[a\-z\]\{2\}\.wikihow\.com\/"
         }
     ]
     // Get
