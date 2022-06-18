@@ -34,7 +34,7 @@
         "https://*.fandom.com/*"
     ],
     "background": {
-        "service_worker": "core/background.js"
+        "service_worker": "src/background.js"
     },
     "content_scripts": [
         {
@@ -43,7 +43,7 @@
                 "https://*/*"
             ],
             "js": [
-                "core/contentscript.js"
+                "src/contentscript.js"
             ],
             "run_at": "document_start"
         }

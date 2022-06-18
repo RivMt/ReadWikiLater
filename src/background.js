@@ -104,8 +104,8 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 function insertCSS(tabId, key) {
     // CSS List
     const css = [
-        'core/overlay.css',
-        'core/styles/' + key + '.css'
+        'src/overlay.css',
+        'src/styles/' + key + '.css'
     ]
     // Insert common CSS
     chrome.scripting.insertCSS({
