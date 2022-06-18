@@ -259,9 +259,10 @@ async function getReadLaterList(keyPage) {
  * Get siteValues object from sync storage
  * @returns {object} Return legacy siteValues if storage does not have object
  */
- async function getSiteValues() {
+async function getSiteValues() {
     // Site value (Legacy)
-    const data = [
+    const data = {}
+    data[keyOptionSiteValues] = [
         {
             "key": "namu",
             "regex": "namu\.wiki\/w\/"
@@ -283,9 +284,11 @@ async function getReadLaterList(keyPage) {
             "regex": "\[a\-z\]\{2\}\.wikihow\.com\/"
         }
     ]
+    data[keyTypeVersion] = "0"
     // Get
     const result = await chrome.storage.sync.get(keyOptionSiteValues)
-    if (result !== undefined && result[keyOptionSiteValues] !== undefined && !isObjectEmpty(result[keyOptionSiteValues])) {
-        return result[keyOptionSiteValues]
+    if (result !== undefined && result[keyOptionSiteValues] !== undefined && result[keyOptionSiteValues][keyTypeData] !== undefined && !isObjectEmpty(result[keyOptionSiteValues][keyTypeData])) {
+        return result[keyOptionSiteValues][keyTypeData]
     }
     return data
+}
