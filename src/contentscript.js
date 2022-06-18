@@ -289,4 +289,3 @@ async function getReadLaterList(keyPage) {
         return result[keyOptionSiteValues]
     }
     return data
-}
