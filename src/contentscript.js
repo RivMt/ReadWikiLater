@@ -55,10 +55,11 @@ let mRegex = /XXXXXXXXXXXXXX/
 window.onload = async function () {
     let active = false
     // Check url
-    const siteValues = await getSiteValues()
+    const siteValues = (await getSiteValues())[keyOptionSiteValues]
     for(var i=0; i < siteValues.length; i++) {
         const regex = new RegExp(siteValues[i][keySiteRegex])
         if (regex.test(document.URL)) { // URL is supported site
+            console.log("Regex: " + regex.toString())
             active = true
             mKeyPage = siteValues[i][keySiteKey]
             mRegex = regex
@@ -287,8 +288,10 @@ async function getSiteValues() {
     data[keyTypeVersion] = "0"
     // Get
     const result = await chrome.storage.sync.get(keyOptionSiteValues)
-    if (result !== undefined && result[keyOptionSiteValues] !== undefined && result[keyOptionSiteValues][keyTypeData] !== undefined && !isObjectEmpty(result[keyOptionSiteValues][keyTypeData])) {
-        return result[keyOptionSiteValues][keyTypeData]
+    if (result !== undefined && result[keyOptionSiteValues] !== undefined && !isObjectEmpty(result[keyOptionSiteValues])) {
+        console.log("Use local")
+        return result[keyOptionSiteValues]
     }
+    console.log("Use in-code")
     return data
 }
