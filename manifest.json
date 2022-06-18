@@ -24,14 +24,7 @@
         "scripting"
     ],
     "host_permissions": [
-        "http://namu.wiki/*",
-        "https://namu.wiki/*",
-        "http://*.wikipedia.org/*",
-        "https://*.wikipedia.org/*",
-        "http://librewiki.net/*",
-        "https://librewiki.net/*",
-        "http://*.fandom.com/*",
-        "https://*.fandom.com/*"
+        "https://*/*"
     ],
     "background": {
         "service_worker": "src/background.js"
