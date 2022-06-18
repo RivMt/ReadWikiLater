@@ -1,29 +1,5 @@
 /// Common Constants
 
-// Site value
-const siteValues = [
-    {
-        "key": "namu",
-        "regex": /namu\.wiki\/w\//
-    },
-    {
-        "key": "wikipedia",
-        "regex": /[a-z][a-z]\.wikipedia\.org\/wiki\//
-    },
-    {
-        "key": "libre",
-        "regex": /librewiki\.net\/wiki\//
-    },
-    {
-        "key": "fandom",
-        "regex": /[a-z]{1,}\.fandom\.com\/([a-z]{2}\/)?wiki\//
-    },
-    {
-        "key": "wikihow",
-        "regex": /[a-z]{2}\.wikihow\.com\//
-    },
-]
-
 // Page Keys
 const keyPageUnknown = "unknown"
 
@@ -31,10 +7,16 @@ const keyPageUnknown = "unknown"
 const keyTypeList = "list"
 const keyTypePage = "page"
 const keyTypeDocument = "doc"
+const keyTypeData = "data"
+const keyTypeVersion = "version"
+const keyTypeDate = "date"
 
 // Site value keys
 const keySiteKey = "key"
 const keySiteRegex = "regex"
+
+// Options keys
+const keyOptionSiteValues = "siteValues"
 
 // Actions
 const actionInsertCSS = "insertCSS"
@@ -70,15 +52,16 @@ let mRegex = /XXXXXXXXXXXXXX/
 /// Init page
 
 // On page start
-window.onload = function () {
+window.onload = async function () {
     let active = false
     // Check url
+    const siteValues = await getSiteValues()
     for(var i=0; i < siteValues.length; i++) {
-        const regex = siteValues[i][keySiteRegex]
+        const regex = new RegExp(siteValues[i][keySiteRegex])
         if (regex.test(document.URL)) { // URL is supported site
             active = true
             mKeyPage = siteValues[i][keySiteKey]
-            mRegex = siteValues[i][keySiteRegex]
+            mRegex = regex
             break
         }
     }
@@ -271,3 +254,38 @@ async function getReadLaterList(keyPage) {
     }
     return []
 }
+
+/**
+ * Get siteValues object from sync storage
+ * @returns {object} Return legacy siteValues if storage does not have object
+ */
+ async function getSiteValues() {
+    // Site value (Legacy)
+    const data = [
+        {
+            "key": "namu",
+            "regex": "namu\.wiki\/w\/"
+        },
+        {
+            "key": "wikipedia",
+            "regex": "\[a\-z\]\[a\-z\]\.wikipedia\.org\/wiki\/"
+        },
+        {
+            "key": "libre",
+            "regex": "librewiki\.net\/wiki\/"
+        },
+        {
+            "key": "fandom",
+            "regex": "\[a\-z\]\{1\,\}\.fandom\.com\/\(\[a\-z\]\{2\}\/\)\?wiki\/"
+        },
+        {
+            "key": "wikihow",
+            "regex": "\[a\-z\]\{2\}\.wikihow\.com\/"
+        }
+    ]
+    // Get
+    const result = await chrome.storage.sync.get(keyOptionSiteValues)
+    if (result !== undefined && result[keyOptionSiteValues] !== undefined && !isObjectEmpty(result[keyOptionSiteValues])) {
+        return result[keyOptionSiteValues]
+    }
+    return data
