@@ -10,6 +10,7 @@ const keyTypeDocument = "doc"
 const keyTypeData = "data"
 const keyTypeVersion = "version"
 const keyTypeDate = "date"
+const keyTypeCSS = "css"
 
 // Site value keys
 const keySiteKey = "key"
@@ -70,10 +71,20 @@ window.onload = async function () {
     // Create read later bar
     createReadLaterBar()
 
-    // Show read later bar when active
+    // Add read late item
     if (active) {
+        // Add item
         createReadLaterItems()
-        requestInsertCSS(mKeyPage)
+        // Insert CSS to set design, if css file exists
+        const data = await getLocalStorage(mKeyPage)
+        let cssName
+        if (data !== undefined && data[mKeyPage] !== undefined && data[mKeyPage][keyTypeCSS] !== undefined && data[mKeyPage][keyTypeCSS]) {
+            cssName = mKeyPage
+        } else {
+            cssName = keyPageUnknown
+        }
+        console.log("Insert: " + cssName)
+        requestInsertCSS(cssName)
     }
 
     // Refresh read later bar items
@@ -224,8 +235,7 @@ async function removeItem(keyPage, url) {
         // Remove item
         list.splice(index, 1)
         // Apply changes
-        const data = {}
-        data[keyPage] = {}
+        const data = await getLocalStorage(keyPage)
         data[keyPage][keyTypeList] = list
         chrome.storage.local.set(data)
     }
@@ -243,14 +253,29 @@ async function removeItem(keyPage, url) {
 }
 
 /**
+ * Get local storage using key
+ * @param {string} key Key
+ * @returns {object} Requested data object
+ */
+async function getLocalStorage(key) {
+    const result = await chrome.storage.local.get(key)
+    if (result != undefined && result[key] != undefined) {
+        return result
+    }
+    const data = {}
+    data[key] = {}
+    return data
+}
+
+/**
  * Get list of read later items for target page
  * @description If it does not exists, return empty list
  * @param {string} keyPage Key of page
  * @returns {Array} Return list of read later items for target page
  */
 async function getReadLaterList(keyPage) {
-    const result = await chrome.storage.local.get(keyPage)
-    if (result != undefined && result[keyPage] != undefined && result[keyPage][keyTypeList] != undefined) {
+    const result = await getLocalStorage(keyPage)
+    if (result[keyPage] !== undefined && result[keyPage][keyTypeList] !== undefined) {
         return result[keyPage][keyTypeList]
     }
     return []

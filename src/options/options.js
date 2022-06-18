@@ -10,6 +10,7 @@ const keyTypeDocument = "doc"
 const keyTypeData = "data"
 const keyTypeVersion = "version"
 const keyTypeDate = "date"
+const keyTypeCSS = "css"
 
 // Site value keys
 const keySiteKey = "key"
@@ -60,6 +61,8 @@ function downloadSiteValues() {
                     const data = {}
                     data[keyOptionSiteValues] = json
                     chrome.storage.sync.set(data)
+                    // Create page-specific CSS
+                    checkPageSpecificCSS(json[keyOptionSiteValues])
                 } else {
                     console.log("Already updated")
                 }
@@ -70,6 +73,42 @@ function downloadSiteValues() {
     request.send()
 }
 
+/**
+ * Create page-specific CSS file if does not exist
+ * @param {Array} siteValueList Array of siteValues
+ */
+function checkPageSpecificCSS(siteValueList) {
+    for(var i=0; i < siteValueList.length; i++) {
+        const key = siteValueList[i][keySiteKey]
+        // Check page-specific css exists
+        chrome.runtime.getPackageDirectoryEntry((entry) => {
+            entry.getFile(
+                'src/styles/' + key + '.css',
+                { create: false },
+                () => {
+                    saveCSSExistence(key, true)
+                },
+                () => { // CSS does not exist
+                    saveCSSExistence(key, false)
+                }
+            )
+        })
+    }
+}
+
+/**
+ * Save page-specific CSS file existence
+ * @param {string} key Key of page
+ * @param {bool} value Existence of CSS file
+ */
+async function saveCSSExistence(key, value) {
+    const data = {}
+    data[key] = {}
+    data[key][keyTypeList] = await getReadLaterList(key)
+    data[key][keyTypeCSS] = value
+    chrome.storage.local.set(data)
+}
+
 /// Utility method below
 
 /**
@@ -77,8 +116,23 @@ function downloadSiteValues() {
  * @param {object} obejct Any object
  * @returns {bool} Return true when object is empty
  */
-function isObjectEmpty(obejct) {
+ function isObjectEmpty(obejct) {
     return Object.keys(obejct).length === 0 && obejct.constructor === Object
+}
+
+/**
+ * Get local storage using key
+ * @param {string} key Key
+ * @returns {object} Requested data object
+ */
+async function getLocalStorage(key) {
+    const result = await chrome.storage.local.get(key)
+    if (result != undefined && result[key] != undefined) {
+        return result
+    }
+    const data = {}
+    data[key] = {}
+    return data
 }
 
 /**
@@ -88,8 +142,8 @@ function isObjectEmpty(obejct) {
  * @returns {Array} Return list of read later items for target page
  */
 async function getReadLaterList(keyPage) {
-    const result = await chrome.storage.local.get(keyPage)
-    if (result != undefined && result[keyPage] != undefined && result[keyPage][keyTypeList] != undefined) {
+    const result = await getLocalStorage(keyPage)
+    if (result[keyPage] !== undefined && result[keyPage][keyTypeList] !== undefined) {
         return result[keyPage][keyTypeList]
     }
     return []
@@ -128,7 +182,9 @@ async function getSiteValues() {
     // Get
     const result = await chrome.storage.sync.get(keyOptionSiteValues)
     if (result !== undefined && result[keyOptionSiteValues] !== undefined && !isObjectEmpty(result[keyOptionSiteValues])) {
+        console.log("Use local")
         return result[keyOptionSiteValues]
     }
+    console.log("Use in-code")
     return data
 }

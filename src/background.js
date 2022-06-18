@@ -10,6 +10,7 @@ const keyTypeDocument = "doc"
 const keyTypeData = "data"
 const keyTypeVersion = "version"
 const keyTypeDate = "date"
+const keyTypeCSS = "css"
 
 // Site value keys
 const keySiteKey = "key"
@@ -68,7 +69,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         case actionOpenDocument:
             const header = "https://"
             const url = header + message.url
-            chrome.tabs.update(sender.tab.id, {"url": url})
+            chrome.tabs.update(sender.tab.id, { "url": url })
             sendResponse({
                 "result": true
             })
@@ -86,9 +87,13 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 function insertCSS(tabId, key) {
     // CSS List
     const css = [
-        'src/overlay.css',
-        'src/styles/' + key + '.css'
+        'src/overlay.css'
     ]
+    // Insert page-specific css if key exists
+    console.log(key)
+    if (key !== keyPageUnknown) {
+        css.push('src/styles/' + key + '.css')
+    }
     // Insert common CSS
     chrome.scripting.insertCSS({
         files: css,
@@ -114,8 +119,8 @@ async function addReadLater(url) {
             // Add document to read later list
             list.push(document)
             // Save storage
-            const data = {}
-            data[result[keyTypePage]] = {}
+            const data = await getLocalStorage(result[keyTypePage])
+
             data[result[keyTypePage]][keyTypeList] = list
             chrome.storage.local.set(data)
         }
@@ -153,8 +158,24 @@ async function parseUrl(url) {
  * @param {object} obejct Any object
  * @returns {bool} Return true when object is empty
  */
-function isObjectEmpty(obejct) {
+ function isObjectEmpty(obejct) {
     return Object.keys(obejct).length === 0 && obejct.constructor === Object
+}
+
+/**
+ * Get local storage using key
+ * @param {string} key Key
+ * @returns {object} Requested data object
+ */
+async function getLocalStorage(key) {
+    const result = await chrome.storage.local.get(key)
+    if (result != undefined && result[key] != undefined) {
+        console.log(result)
+        return result
+    }
+    const data = {}
+    data[key] = {}
+    return data
 }
 
 /**
@@ -164,8 +185,8 @@ function isObjectEmpty(obejct) {
  * @returns {Array} Return list of read later items for target page
  */
 async function getReadLaterList(keyPage) {
-    const result = await chrome.storage.local.get(keyPage)
-    if (result != undefined && result[keyPage] != undefined && result[keyPage][keyTypeList] != undefined) {
+    const result = await getLocalStorage(keyPage)
+    if (result[keyPage] !== undefined && result[keyPage][keyTypeList] !== undefined) {
         return result[keyPage][keyTypeList]
     }
     return []
@@ -204,7 +225,9 @@ async function getSiteValues() {
     // Get
     const result = await chrome.storage.sync.get(keyOptionSiteValues)
     if (result !== undefined && result[keyOptionSiteValues] !== undefined && !isObjectEmpty(result[keyOptionSiteValues])) {
+        console.log("Use local")
         return result[keyOptionSiteValues]
     }
+    console.log("Use in-code")
     return data
 }
