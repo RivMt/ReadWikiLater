@@ -1,0 +1,11 @@
+{
+    "appName": {
+      "message": "後でWiki読む"
+    },
+    "appDesc": {
+      "message": "Wikiの文書を後で読めるように保存します"
+    },
+    "menuAddReadLater": {
+      "message": "後で読むリストに追加"
+    }
+  }
