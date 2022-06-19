@@ -57,3 +57,22 @@ svg.extReadLaterItemCloseIcon {
     height: 24px;
     color: #5f6368
 }
+
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+    /* Item */
+    .extReadLaterItem {
+        background-color: #1f2023;
+        border: 1px solid #383840;
+    }
+    
+    /* Close button icon */
+    svg.extReadLaterItemCloseIcon {
+        color: white;
+    }
+
+    /* Item name */
+    p.extReadLaterItemName {
+        color: white;
+    }
+}
